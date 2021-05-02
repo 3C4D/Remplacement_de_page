@@ -82,7 +82,7 @@ int fifo(int nb_case, int debug, char *nom_fic){
 int lru(int nb_case, int debug, char *nom_fic){
 
   FILE *fichier_mem = lire_fichier(nom_fic);  /* On ouvre le fichier d'accès */
-  int nb_acces, nb_pages, i, page, defauts = 0, plein = 0;
+  int nb_acces, nb_pages, i, j, page, victime, min_app, defauts = 0, plein = 0;
   int *present, *acces, *apparition;
   /* On alloue le tableau d'accès en fonction du nombre de case mémoire */
   acces = (int *)malloc(nb_case * sizeof(int));
@@ -119,7 +119,45 @@ int lru(int nb_case, int debug, char *nom_fic){
     if(fscanf(fichier_mem, "%d", &page) != 1){  /* On saisie la page */
       erreur("accès non trouvé dans le fichier dans le fonction lru()");
     }
+    apparition[page]++;             /* La page est appellée */
+    if(!present[page]){             /* La page n'est pas présente en mémoire */
+      if(plein < nb_case){                /* Il reste de la place */
+        acces[plein] = page;              /* On place la page */
+        present[page] = 1;                /* La page est désormais présente */
+        plein++;                          /* On enlève une place vide */
+      }
+      else{                               /* La mémoire est pleine */
+        if(debug == 1){
+          printf("#### Defaut de page ####\n");
+        }
+
+        min_app = 0;      /* On remet le compteur d'apparition minimum à 0*/
+        victime = 0;      /* On remet l'index de la victime à 0 */
+        for(j = nb_case-1; j >= 0; j--){
+          if(apparition[acces[j]] <= min_app){  /* Nouvelle victime */
+            min_app = apparition[acces[j]];
+            victime = j;
+          }
+        }
+
+        defauts++;                        /* Defaut de page */
+        present[acces[victime]] = 0;      /* La victime n'est plus présente */
+        present[page] = 1;                /* La nouvelle page est présente */
+        acces[victime] = page;            /* On place la nouvelle page */
+      }
+    }
+    if(debug == 1){
+      affiche_acces(acces, nb_case);
+    }
   }
+  if(debug != 2){
+    printf("\n############    Algorithme LRU    ############\n");
+    printf("Il y a %d défauts de pages avec %d cases en RAM\n",defauts,nb_case);
+    printf("################################################\n\n");
+  }
+  free(acces);    /* On libère les tableaux utilisés */
+  free(present);
+  free(apparition);
   return defauts;       /* On retourne le nombre de defauts */
 }
 
@@ -203,9 +241,9 @@ int horloge(int nb_case, int debug, char *nom_fic){
     }
   }
   if(debug != 2){
-    printf("\n############    Algorithme de l'horloge   ############\n");
+    printf("\n############    Algorithme de l'horloge    ############\n");
     printf("Il y a %d défauts de pages avec %d cases en RAM\n",defauts,nb_case);
-    printf("######################################################\n\n");
+    printf("#######################################################\n\n");
   }
   free(acces);    /* On libère les tableaux utilisés */
   free(valide);
