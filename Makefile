@@ -1,3 +1,7 @@
+# Enzo CADONI G2
+# TP supplementaire
+# Makefile
+
 SRC_DIR := src
 OBJ_DIR := obj
 BIN_DIR := bin
@@ -9,7 +13,7 @@ ALL_EXE  	:= $(EXE_PAGE) $(EXE_BENCH) $(EXE_GEN)
 SRC 			:= $(wildcard $(SRC_DIR)/*.c)
 OBJ 			:= $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 OBJ_PAGE  := $(filter-out %_benchmark.o, $(filter-out %_generation.o, $(OBJ)))
-OBJ_BENCH := $(filter-out %_remplacement.o, $(filter-out %_generation.o, $(OBJ)))
+OBJ_BENCH := $(filter-out %main_remplacement.o, $(filter-out %main_generation.o, $(OBJ)))
 OBJ_GEN := $(filter-out %_remplacement.o, $(filter-out %_benchmark.o, $(OBJ)))
 
 CC := gcc

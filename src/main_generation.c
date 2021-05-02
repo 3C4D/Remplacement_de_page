@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "erreur.h"
-#include "fct_generation.h"
+#include "fonctions_generation.h"
 #include "utilitaire.h"
 
 int main(int argc, char **argv){

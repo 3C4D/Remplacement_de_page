@@ -10,16 +10,14 @@
 #include "utilitaire.h"
 
 /* Fonction implémantant l'algorithme FIFO */
-void fifo(int nb_case, int debug, char *nom_fic){
+int fifo(int nb_case, int debug, char *nom_fic){
 
   FILE *fichier_mem = lire_fichier(nom_fic);  /* On ouvre le fichier d'accès */
   int *acces, nb_acces, nb_pages, i, page, defauts = 0, victime = 0, plein = 0;
   int *present;
   /* On alloue le tableau d'accès en fonction du nombre de case mémoire */
   acces = (int *)malloc(nb_case * sizeof(int));
-  if(acces == NULL){  /* Vérification de l'allocation */
-    erreur("erreur d'allocation dans la fonction fifo");
-  }
+  verif_alloc(acces); /* Vérification de l'allocation */
 
   /* On saisie le nombre d'accès total */
   if(fscanf(fichier_mem, "%d", &nb_acces) != 1){
@@ -32,14 +30,12 @@ void fifo(int nb_case, int debug, char *nom_fic){
 
   /* On alloue le tableau de présence des pages dans la mémoire */
   present = (int *)malloc(nb_pages * sizeof(int));
-  if(present == NULL){  /* Vérification de l'allocation */
-    erreur("erreur d'allocation dans la fonction fifo");
-  }
+  verif_alloc(present); /* Vérification de l'allocation */
   for(i = 0; i < nb_pages; i++){ /* Initialisation du tableau de presence */
     present[i] = 0;
   }
 
-  if(debug){
+  if(debug == 1){
     putchar('\n');
   }
 
@@ -55,7 +51,7 @@ void fifo(int nb_case, int debug, char *nom_fic){
           plein++;
       }
       else{
-        if(debug){
+        if(debug == 1){
           printf("#### Defaut de page ####\n");
         }
         present[page] = 1;          /* On met le tableau de presence à 1 */
@@ -66,94 +62,69 @@ void fifo(int nb_case, int debug, char *nom_fic){
         defauts++;                  /* Il y a un defaut de page */
       }
     }
-    if(debug){  /* Mode debug, on affiche le tableau d'accès */
+    if(debug == 1){   /* Mode debug, on affiche le tableau d'accès */
       affiche_acces(acces, plein);
     }
   }
   /* On affiche le nombre de défaut de page */
-  printf("\n############    Algorithme FIFO    ############\n");
-  printf("Il y a %d défauts de pages avec %d cases en RAM\n", defauts, nb_case);
-  printf("###############################################\n\n");
+  if(debug != 2){
+    printf("\n############    Algorithme FIFO    ############\n");
+    printf("Il y a %d défauts de pages avec %d cases en RAM\n",defauts,nb_case);
+    printf("###############################################\n\n");
+  }
   fclose(fichier_mem);  /* On ferme le fichier d'accès mémoire */
   free(acces);          /* On libère le tableau d'accès */
   free(present);        /* On libère le tableau de présence */
-
-  /* Compléxité : Theta(nombre d'accès) */
+  return defauts;     /* On retourne le nombre de defauts */
 }
 
 /* Fonction implémentant l'algorithme LIFO */
-void lifo(int nb_case, int debug, char *nom_fic){
+int lru(int nb_case, int debug, char *nom_fic){
 
   FILE *fichier_mem = lire_fichier(nom_fic);  /* On ouvre le fichier d'accès */
   int nb_acces, nb_pages, i, page, defauts = 0, plein = 0;
-  int *present;
+  int *present, *acces, *apparition;
   /* On alloue le tableau d'accès en fonction du nombre de case mémoire */
-  int *acces = (int *)malloc(nb_case * sizeof(int));
-  if(acces == NULL){  /* Vérification de l'allocation */
-    erreur("erreur d'allocation dans la fonction lifo");
-  }
+  acces = (int *)malloc(nb_case * sizeof(int));
+  verif_alloc(acces); /* Vérification de l'allocation */
 
   /* On saisie le nombre d'accès total */
   if(fscanf(fichier_mem, "%d", &nb_acces) != 1){
-    erreur("fichier mal formatté dans la fonction lifo()");
+    erreur("fichier mal formatté dans la fonction lru()");
   }
 
   /* On saisie le nombre de pages */
   if(fscanf(fichier_mem, "%d", &nb_pages) != 1){
-    erreur("fichier mal formatté dans la fonction lifo()");
+    erreur("fichier mal formatté dans la fonction lru()");
   }
 
   /* On alloue le tableau de présence des pages dans la mémoire */
   present = (int *)malloc(nb_pages * sizeof(int));
-  if(present == NULL){  /* Vérification de l'allocation */
-    erreur("erreur d'allocation dans la fonction lifo");
-  }
-  for(i = 0; i < nb_pages; i++){ /* Initialisation du tableau de presence */
+  verif_alloc(present); /* Vérification de l'allocation */
+
+  /* On alloue le tableau de présence des pages dans la mémoire */
+  apparition = (int *)malloc(nb_pages * sizeof(int));
+  verif_alloc(apparition);  /* Vérification de l'allocation */
+
+  for(i = 0; i < nb_pages; i++){ /* Initialisation des tableaux précédents */
     present[i] = 0;
+    apparition[i] = 0;
   }
 
-  if(debug){
+  if(debug == 1){
     putchar('\n');
   }
 
   for(i = 0; i < nb_acces; i++){
     if(fscanf(fichier_mem, "%d", &page) != 1){  /* On saisie la page */
-      erreur("accès non trouvé dans le fichier dans le fonction lifo()");
-    }
-
-    if(!present[page]){ /* Page non présente en mémoire */
-      if(plein < nb_case){  /* On rempli le tableau d'accès */
-          acces[plein] = page;
-          present[page] = 1;
-          plein++;
-      }
-      else{
-        if(debug){
-          printf("#### Defaut de page ####\n");
-        }
-        present[page] = 1;              /* On met le tableau de presence à 1 */
-        present[acces[nb_case-1]] = 0;  /* La victime n'est plus présente */
-        acces[nb_case-1] = page;        /* On remplace la victime */
-        defauts++;                      /* Il y a un defaut de page */
-      }
-    }
-    if(debug){  /* Mode debug, on affiche le tableau d'accès */
-      affiche_acces(acces, plein);
+      erreur("accès non trouvé dans le fichier dans le fonction lru()");
     }
   }
-  /* On affiche le nombre de défaut de page */
-  printf("\n############    Algorithme LIFO    ############\n");
-  printf("Il y a %d défauts de pages avec %d cases en RAM\n", defauts, nb_case);
-  printf("###############################################\n\n");
-  fclose(fichier_mem);  /* On ferme le fichier d'accès mémoire */
-  free(acces);          /* On libère le tableau d'accès */
-  free(present);        /* On libère le tableau de présence */
-
-  /* Compléxité : Theta(nombre d'accès) */
+  return defauts;       /* On retourne le nombre de defauts */
 }
 
 /* Fonction implementant l'algorithme de l'horloge */
-void horloge(int nb_case, int debug, char *nom_fic){
+int horloge(int nb_case, int debug, char *nom_fic){
 
   FILE *fichier_mem = lire_fichier(nom_fic);  /* On ouvre le fichier d'accès */
   int nb_acces, nb_pages, i, j, page, plein = 0, pointeur = 0, defauts = 0;
@@ -171,26 +142,29 @@ void horloge(int nb_case, int debug, char *nom_fic){
 
   /* Le tableau acces contiendra les pages chargées en mémoire */
   acces = (int *)malloc(nb_case * sizeof(int));
+  verif_alloc(acces); /* Vérification de l'allocation */
 
   /* On alloue le tableau de présence des pages dans la mémoire */
   present = (int *)malloc(nb_pages * sizeof(int));
+  verif_alloc(present); /* Vérification de l'allocation */
   for(i = 0; i < nb_pages; i++){ /* Initialisation du tableau de presence */
     present[i] = 0;
   }
 
   /* On alloue le tableau contenant les bits de validité */
   valide = (int *)malloc(nb_case * sizeof(int));
+  verif_alloc(valide);  /* Vérification de l'allocation */
   for(i = 0; i < nb_pages; i++){ /* Initialisation du tableau de presence */
     present[i] = 0;
   }
 
-  if(debug){
+  if(debug == 1){
     putchar('\n');
   }
 
   for(i = 0; i < nb_acces; i++){  /* On parcours les accès */
     if(fscanf(fichier_mem, "%d", &page) != 1){  /* On saisie la page */
-      erreur("accès non trouvé dans le fichier dans le fonction lifo()");
+      erreur("accès non trouvé dans le fichier dans le fonction horloge()");
     }
 
     if(!present[page]){             /* La page n'est pas présente en mémoire */
@@ -202,7 +176,7 @@ void horloge(int nb_case, int debug, char *nom_fic){
         plein++;                          /* On enlève une place vide */
       }
       else{                               /* La mémoire est pleine */
-        if(debug){
+        if(debug == 1){
           printf("#### Defaut de page ####\n");
         }
         defauts++;                        /* Defaut de page */
@@ -224,20 +198,23 @@ void horloge(int nb_case, int debug, char *nom_fic){
       valide[pointeur] = 0;               /* La case n'est plus valide*/
       pointeur = (pointeur+1)%nb_case;    /* Le pointeur avance */
     }
-    if(debug){
+    if(debug == 1){
       affiche_acces(acces, nb_case);
     }
   }
-  printf("\n############    Algorithme de l'horloge   ############\n");
-  printf("Il y a %d défauts de pages avec %d cases en RAM\n", defauts, nb_case);
-  printf("######################################################\n\n");
+  if(debug != 2){
+    printf("\n############    Algorithme de l'horloge   ############\n");
+    printf("Il y a %d défauts de pages avec %d cases en RAM\n",defauts,nb_case);
+    printf("######################################################\n\n");
+  }
   free(acces);    /* On libère les tableaux utilisés */
   free(valide);
   free(present);
+  return defauts;   /* On retourne le nombre de defauts */
 }
 
 /* Fonction implementant l'algorithme optimal */
-void optimal(int nb_case, int debug, char *nom_fic){
+int optimal(int nb_case, int debug, char *nom_fic){
 
   FILE *fichier_mem = lire_fichier(nom_fic);  /* On ouvre le fichier d'accès */
   int *acces, *all_acces, *present, i, j, nb_acces, nb_pages, plein = 0;
@@ -255,12 +232,15 @@ void optimal(int nb_case, int debug, char *nom_fic){
 
   /* Le tableau acces contiendra les pages chargées en mémoire */
   acces = (int *)malloc(nb_case * sizeof(int));
+  verif_alloc(acces); /* Vérification de l'allocation */
 
   /* Le tableau apparition contiendra les apparition dans les accès des pages */
   apparition = (int *)malloc(nb_pages * sizeof(int));
+  verif_alloc(apparition);  /* Vérification de l'allocation */
 
   /* le tableau all_acces contiendra tous les accès mémoire */
   all_acces = (int *)malloc(nb_acces * sizeof(int));
+  verif_alloc(all_acces); /* Vérification de l'allocation */
   for(i = 0; i < nb_acces; i++){
     if(fscanf(fichier_mem, "%d", &all_acces[i]) != 1){
       erreur("fichier mal formatté dans la fonction optimal()");
@@ -269,11 +249,12 @@ void optimal(int nb_case, int debug, char *nom_fic){
 
   /* On alloue le tableau de présence des pages dans la mémoire */
   present = (int *)malloc(nb_pages * sizeof(int));
+  verif_alloc(present); /* Vérification de l'allocation */
   for(i = 0; i < nb_pages; i++){ /* Initialisation du tableau de presence */
     present[i] = 0;
   }
 
-  if(debug){
+  if(debug == 1){
     putchar('\n');
   }
 
@@ -285,7 +266,7 @@ void optimal(int nb_case, int debug, char *nom_fic){
         plein++;                        /* On enlève une place vide */
       }
       else{                             /* La mémoire est pleine */
-        if(debug){
+        if(debug == 1){
           printf("#### Defaut de page ####\n");
         }
         /* On regarde la page qui apparait le plus loin dans les accès */
@@ -313,17 +294,20 @@ void optimal(int nb_case, int debug, char *nom_fic){
         defauts++;
       }
     }
-    if(debug){                    /* On affiche si le debug mode est activé */
+    if(debug == 1){               /* On affiche si le debug mode est activé */
       affiche_acces(acces, plein);
     }
   }
-  printf("\n############    Algorithme Optimal   ############\n");
-  printf("Il y a %d défauts de pages avec %d cases en RAM\n", defauts, nb_case);
-  printf("#################################################\n\n");
+  if(debug != 2){
+    printf("\n############    Algorithme Optimal   ############\n");
+    printf("Il y a %d défauts de pages avec %d cases en RAM\n",defauts,nb_case);
+    printf("#################################################\n\n");
+  }
   free(apparition);   /* On libère les tableaux utilisés */
   free(present);
   free(all_acces);
   free(acces);
+  return defauts;     /* On retourne le nombre de defauts */
 }
 
 /* Fonction déterminant quel algorithme l'utilisateur a choisi et le lance */
@@ -333,7 +317,7 @@ void choix_algo(int algo, int nb_case, int debug, char *nom_fic){
       fifo(nb_case, debug, nom_fic);
       break;
     case 1:   /* LIFO */
-      lifo(nb_case, debug, nom_fic);
+      lru(nb_case, debug, nom_fic);
       break;
     case 2:   /* Horloge */
       horloge(nb_case, debug, nom_fic);

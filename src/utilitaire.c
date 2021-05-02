@@ -11,7 +11,7 @@
 void help(char *str){
   printf("\n%s <algo> <nbCase> <mode> <fic>\n\n", str);
   puts("<algo> : -f -l -h -o");
-  puts("-f : FIFO, -l : LIFO, -h : Horloge, -o : Optimal");
+  puts("-f : FIFO, -l : LRU, -h : Horloge, -o : Optimal");
   putchar('\n');
   puts("<nbCase> : entier positif et non nul");
   putchar('\n');
@@ -88,4 +88,11 @@ void affiche_acces(int *acces, int nb_case){
     printf("%d, ", acces[i]);
   }
   printf("%d]\n", acces[i]);
+}
+
+/* Vérifie une allocation */
+void verif_alloc(void *ptr){
+  if (ptr == NULL) {
+    erreur("Erreur: Échec de l'allocation");
+  }
 }

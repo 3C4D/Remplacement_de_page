@@ -33,7 +33,7 @@ Le chemin pour accéder à l'exécutable est : `./bin/remplacement`
 Les arguments sont, dans l'ordre :
   - L'algorithme :
     - -f : FIFO.
-    - -l : LIFO.
+    - -l : LRU.
     - -h : Horloge.
     - -o : Optimal.
   - Le nombre de case.
@@ -75,7 +75,16 @@ les pages pourront aller de 0 à 29 soit 30 pages maximum.
 
 ## Benchmark
 
-Le chemin
+Le chemin pour accéder à l'exécutable est : `./bin/generation_fichier`
+
+Cet exécutable permet de mesurer le temps d'exécution des différents algorithmes
+ainsi que le nombre de défauts de pages qu'ils fournissent en donnant des
+paramètres en ligne de commande.
+
+Les arguments sont, dans l'ordre :
+  - Le nombre d'accès mémoire.
+  - Le nombre de page maximum.
+  - Le nombre de case en RAM.
 
 ## Complexité
 

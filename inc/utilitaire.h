@@ -23,4 +23,7 @@ FILE *ecrire_fichier(char *nom_fic);
 /* Fonction permettant d'affcher un tableau d'accès (debug mode)*/
 void affiche_acces(int *acces, int nb_case);
 
+/* Vérifie une allocation */
+void verif_alloc(void *ptr);
+
 #endif
