@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 #include "utilitaire.h"
 
 /* Fonction d'usage de l'exécutable de génération */

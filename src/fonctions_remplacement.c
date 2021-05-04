@@ -63,6 +63,7 @@ int fifo(int nb_case, int debug, char *nom_fic){
       }
     }
     if(debug == 1){   /* Mode debug, on affiche le tableau d'accès */
+      printf("%d -> ", page);
       affiche_acces(acces, plein);
     }
   }
@@ -147,6 +148,7 @@ int lru(int nb_case, int debug, char *nom_fic){
       }
     }
     if(debug == 1){
+      printf("%d -> ", page);
       affiche_acces(acces, nb_case);
     }
   }
@@ -237,6 +239,7 @@ int horloge(int nb_case, int debug, char *nom_fic){
       pointeur = (pointeur+1)%nb_case;    /* Le pointeur avance */
     }
     if(debug == 1){
+      printf("%d -> ", page);
       affiche_acces(acces, nb_case);
     }
   }
@@ -333,6 +336,7 @@ int optimal(int nb_case, int debug, char *nom_fic){
       }
     }
     if(debug == 1){               /* On affiche si le debug mode est activé */
+      printf("%d -> ", all_acces[i]);
       affiche_acces(acces, plein);
     }
   }
