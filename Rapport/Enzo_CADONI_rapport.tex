@@ -1,0 +1,129 @@
+\documentclass[a4paper, 10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage[top=3cm, bottom=3cm, left=2cm, right=2cm]{geometry}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fourier}
+
+\title{Système d'exploitation \\ TP supplémentaire \\ Protocole experimental}
+\author{Enzo CADONI}
+\date{}
+
+\begin{document}
+  \maketitle
+  \newpage
+
+  \section{Préambule}
+    Ce protocole s'appuiera sur l'utilisation de l'exécutable \verb+ benchmark +
+    situé dans le repertoire \verb+ bin +. \\
+
+    Cet exécutable permet de tester tous les algorithmes avec des paramètres
+    fixés passés en ligne de commande et affiche leurs temps d'execution
+    respectifs. \\
+
+    Pour réaliser les différentes experiences, nous utiliserons un script nommé
+    \verb+ experience.sh +
+
+  \section{Le protocole}
+    Les différentes experiences auront pour but d'étudier le nombre de défaut
+    de page que cause un algorithme et le temps qu'il met à se terminer. \\
+
+    Nous fixerons divers paramètres pour évaluer l'influence de chacun sur
+    les deux variables que nous voulons étudier. \\
+
+    Nous fixerons pour toutes les expériences le nombre d'accès car il n'est
+    pas responsable de la variation de la proportion de defaut de page
+    (Nous le fixerons à 100000).
+
+    Nous allons commencer par fixer le nombre de case en RAM, puis nous ferons
+    varier le nombre de pages.
+    Il serait judicieux de procéder par puissance de 10.
+
+  \section{Les résultats}
+    RAM : 1 \\
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+        PAGES             & 10 & 100 & 1000 & 10000 & 100000 \\
+      \hline
+        Defauts FIFO    & 89960 & 98959 & 99896 &  99984 & 99999 \\
+      \hline
+        Defauts LRU     & 89960 & 98959 & 99896 & 99984 & 99999 \\
+      \hline
+        Defauts Horloge & 89960 & 98959 & 99896 & 99984 & 99999 \\
+      \hline
+        Defauts Optimal & 89960 & 98959 & 99896 & 99984 & 99999 \\
+      \hline
+    \end{tabular} \\
+
+    RAM : 10 \\
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+        PAGES             & 10 & 100 & 1000 & 10000 & 100000 \\
+      \hline
+        Defauts FIFO    & $\times$ & 89987 & 98956 & 99892 & 99981 \\
+      \hline
+        Defauts LRU     & $\times$ & 90038 & 98988 & 99905 & 99983 \\
+      \hline
+        Defauts Horloge & $\times$ & 89960 & 98954 & 99892 & 99981\\
+      \hline
+        Defauts Optimal & $\times$ & 90006 & 98793 & 99175 & 99103 \\
+      \hline
+    \end{tabular} \\
+
+    RAM : 100 \\
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+        PAGES             & 10 & 100 & 1000 & 10000 & 100000 \\
+      \hline
+        Defauts FIFO & $\times$ & $\times$ & 89964 & 98904 & 99802 \\
+      \hline
+        Defauts LRU & $\times$ & $\times$ & 89817 & 98895 & 99807 \\
+      \hline
+        Defauts Horloge & $\times$ & $\times$ & 89950 & 98901 & 99802 \\
+      \hline
+        Defauts Optimal & $\times$ & $\times$ & 89399 & 96507 & 96627 \\
+      \hline
+    \end{tabular} \\
+
+    RAM : 1000 \\
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+        PAGES             & 10 & 100 & 1000 & 10000 & 100000 \\
+      \hline
+        Defauts FIFO & $\times$ & $\times$ & $\times$ & 89017 & 98041 \\
+      \hline
+        Defauts LRU & $\times$ & $\times$ & $\times$ & 89140 & 98009 \\
+      \hline
+        Defauts Horloge & $\times$ & $\times$ & $\times$ & 88997 & 98040 \\
+      \hline
+        Defauts Optimal & $\times$ & $\times$ & $\times$ & 83335 & 88549 \\
+      \hline
+    \end{tabular} \\
+
+    \newpage
+    RAM : 10000 \\
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline
+        PAGES             & 10 & 100 & 1000 & 10000 & 100000 \\
+      \hline
+        Defauts FIFO & $\times$ & $\times$ & $\times$ & $\times$ & 80622 \\
+      \hline
+        Defauts LRU & $\times$ & $\times$ & $\times$ & $\times$ & 80433 \\
+      \hline
+        Defauts Horloge & $\times$ & $\times$ & $\times$ & $\times$ & 80600 \\
+      \hline
+        Defauts Optimal & $\times$ & $\times$ & $\times$ & $\times$ & 60148 \\
+      \hline
+    \end{tabular}
+
+    \subsection{Explication}
+      Nous voyons très nettement se distinguer l'algorithme de bellady,
+      surtout dans le dernier tableau où il diverge de près de 20000 defauts. \\
+
+      Les autres algorithmes ne sembles pas se distinguer, ils semblent varier
+      mais restent plus ou moins dans les mêmes ordres de grandeur.
+\end{document}

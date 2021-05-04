@@ -10,7 +10,7 @@
 
 /* Fonction d'usage de l'exécutable de génération */
 void usage_gen(char *str){
-  fprintf(stderr, "\nUsage : %s <nb_acces> <nbpage>\n", str);
+  fprintf(stderr, "\nUsage : %s <nb_acces> <nbpage> <nom_fic>\n", str);
   fprintf(stderr, "\t<nb_acces> : entier positif non nul\n");
   fprintf(stderr, "\t<nb_page> : entier positif non nul\n");
   fprintf(stderr, "\t<nom_fic> : nom de fichier avec extension valide\n");

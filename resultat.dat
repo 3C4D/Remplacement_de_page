@@ -1,0 +1,90 @@
+make: rien à faire pour « all ».
+RAM : 1 , PAGES : 10 :
+  89960 defauts de pages pour FIFO
+  89960 defauts de pages pour LRU
+  89960 defauts de pages pour Horloge
+  89960 defauts de pages pour Optimal
+RAM : 1 , PAGES : 100 :
+  98959 defauts de pages pour FIFO
+  98959 defauts de pages pour LRU
+  98959 defauts de pages pour Horloge
+  98959 defauts de pages pour Optimal
+RAM : 1 , PAGES : 1000 :
+  99896 defauts de pages pour FIFO
+  99896 defauts de pages pour LRU
+  99896 defauts de pages pour Horloge
+  99896 defauts de pages pour Optimal
+RAM : 1 , PAGES : 10000 :
+  99984 defauts de pages pour FIFO
+  99984 defauts de pages pour LRU
+  99984 defauts de pages pour Horloge
+  99984 defauts de pages pour Optimal
+RAM : 1 , PAGES : 100000 :
+  99999 defauts de pages pour FIFO
+  99999 defauts de pages pour LRU
+  99999 defauts de pages pour Horloge
+  99999 defauts de pages pour Optimal
+
+#############################################
+
+RAM : 10 , PAGES : 100 :
+  89987 defauts de pages pour FIFO
+  90038 defauts de pages pour LRU
+  89960 defauts de pages pour Horloge
+  90006 defauts de pages pour Optimal
+RAM : 10 , PAGES : 1000 :
+  98956 defauts de pages pour FIFO
+  98988 defauts de pages pour LRU
+  98954 defauts de pages pour Horloge
+  98793 defauts de pages pour Optimal
+RAM : 10 , PAGES : 10000 :
+  99892 defauts de pages pour FIFO
+  99905 defauts de pages pour LRU
+  99892 defauts de pages pour Horloge
+  99175 defauts de pages pour Optimal
+RAM : 10 , PAGES : 100000 :
+  99981 defauts de pages pour FIFO
+  99983 defauts de pages pour LRU
+  99981 defauts de pages pour Horloge
+  99103 defauts de pages pour Optimal
+
+#############################################
+
+RAM : 100 , PAGES : 1000 :
+  89964 defauts de pages pour FIFO
+  89817 defauts de pages pour LRU
+  89950 defauts de pages pour Horloge
+  89399 defauts de pages pour Optimal
+RAM : 100 , PAGES : 10000 :
+  98904 defauts de pages pour FIFO
+  98895 defauts de pages pour LRU
+  98901 defauts de pages pour Horloge
+  96507 defauts de pages pour Optimal
+RAM : 100 , PAGES : 100000 :
+  99802 defauts de pages pour FIFO
+  99807 defauts de pages pour LRU
+  99802 defauts de pages pour Horloge
+  96627 defauts de pages pour Optimal
+
+#############################################
+
+RAM : 1000 , PAGES : 10000 :
+  89017 defauts de pages pour FIFO
+  89140 defauts de pages pour LRU
+  88997 defauts de pages pour Horloge
+  83335 defauts de pages pour Optimal
+RAM : 1000 , PAGES : 100000 :
+  98041 defauts de pages pour FIFO
+  98009 defauts de pages pour LRU
+  98040 defauts de pages pour Horloge
+  88549 defauts de pages pour Optimal
+
+#############################################
+
+RAM : 10000 , PAGES : 100000 :
+  80622 defauts de pages pour FIFO
+  80433 defauts de pages pour LRU
+  80600 defauts de pages pour Horloge
+  60184 defauts de pages pour Optimal
+
+#############################################
