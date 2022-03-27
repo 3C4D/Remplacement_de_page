@@ -1,4 +1,7 @@
-# Remplacement
+# Remplacement de page
+
+Programme simulant différents algorithmes plus ou moins efficaces de
+remplacement de page.
 
 ## Compilation
 
